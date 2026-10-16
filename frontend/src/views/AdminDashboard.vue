@@ -95,6 +95,9 @@ function resetFilters() {
   filters.max_total = ''
   filters.sort = 'newest'
   filters.page = 1
+  // q is not watched (debounced) — always re-run so "Clear filters"
+  // recovers from a q-only empty state instead of staying stale.
+  runSearch()
 }
 
 function onQInput() {
@@ -150,14 +153,14 @@ onMounted(runSearch)
     <!-- Page header -->
     <div class="mb-6 flex flex-wrap items-center justify-between gap-3">
       <div>
-        <h1 class="text-xl font-bold text-stone-900 sm:text-2xl">Order Search Dashboard</h1>
-        <p class="mt-1 text-sm text-stone-500">
+        <h1 class="text-xl font-bold text-stone-900 dark:text-stone-100 sm:text-2xl">Order Search Dashboard</h1>
+        <p class="mt-1 text-sm text-stone-500 dark:text-stone-400">
           Search and analytics powered by <strong class="font-semibold">Elasticsearch</strong> — full-text
           over customer names, emails, and item titles.
         </p>
       </div>
       <button
-        class="inline-flex items-center gap-2 rounded-lg border border-stone-200 bg-white px-3.5 py-2 text-sm font-medium text-stone-700 shadow-sm transition-soft hover:bg-stone-50 lg:hidden"
+        class="inline-flex items-center gap-2 rounded-lg border border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900 px-3.5 py-2 text-sm font-medium text-stone-700 dark:text-stone-300 shadow-sm transition-soft hover:bg-stone-50 dark:hover:bg-stone-800 lg:hidden"
         @click="showFilters = !showFilters"
       >
         <SlidersHorizontal class="h-4 w-4" aria-hidden="true" />
@@ -167,11 +170,11 @@ onMounted(runSearch)
 
     <!-- KPI cards (from ES aggregations over the current filter set) -->
     <div class="mb-6 grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-5">
-      <KpiCard title="Revenue" :value="formatMoney(aggs.revenue)" :icon="Wallet" accent="bg-indigo-100 text-indigo-600" sub="Filtered result set" />
-      <KpiCard title="Total orders" :value="aggs.total_orders ?? total" :icon="Receipt" accent="bg-stone-100 text-stone-600" sub="Matching orders" />
-      <KpiCard title="Pending" :value="statusCount('PENDING')" :icon="Hourglass" accent="bg-amber-100 text-amber-700" />
-      <KpiCard title="Processing" :value="statusCount('PROCESSING')" :icon="Clock" accent="bg-blue-100 text-blue-700" />
-      <KpiCard title="Shipped" :value="statusCount('SHIPPED')" :icon="PackageCheck" accent="bg-emerald-100 text-emerald-700" />
+      <KpiCard title="Revenue" :value="formatMoney(aggs.revenue)" :icon="Wallet" accent="bg-indigo-100 text-indigo-600 dark:bg-indigo-950 dark:text-indigo-400" sub="Filtered result set" />
+      <KpiCard title="Total orders" :value="aggs.total_orders ?? total" :icon="Receipt" accent="bg-stone-100 text-stone-600 dark:bg-stone-800 dark:text-stone-300" sub="Matching orders" />
+      <KpiCard title="Pending" :value="statusCount('PENDING')" :icon="Hourglass" accent="bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300" />
+      <KpiCard title="Processing" :value="statusCount('PROCESSING')" :icon="Clock" accent="bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300" />
+      <KpiCard title="Shipped" :value="statusCount('SHIPPED')" :icon="PackageCheck" accent="bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300" />
     </div>
 
     <div class="flex flex-col gap-6 lg:flex-row">
@@ -180,15 +183,15 @@ onMounted(runSearch)
         :class="['lg:block lg:w-64 lg:shrink-0', showFilters ? 'block' : 'hidden']"
         aria-label="Search filters"
       >
-        <div class="space-y-5 rounded-xl border border-stone-200 bg-white p-5 shadow-sm lg:sticky lg:top-6">
+        <div class="space-y-5 rounded-xl border border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900 p-5 shadow-sm lg:sticky lg:top-6">
           <div class="flex items-center justify-between">
-            <h2 class="flex items-center gap-2 text-sm font-semibold text-stone-900">
-              <SlidersHorizontal class="h-4 w-4 text-stone-500" aria-hidden="true" />
+            <h2 class="flex items-center gap-2 text-sm font-semibold text-stone-900 dark:text-stone-100">
+              <SlidersHorizontal class="h-4 w-4 text-stone-500 dark:text-stone-400" aria-hidden="true" />
               Filters
             </h2>
             <button
               v-if="hasActiveFilters"
-              class="inline-flex items-center gap-1 text-xs font-medium text-indigo-600 hover:text-indigo-700"
+              class="inline-flex items-center gap-1 text-xs font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-400"
               @click="resetFilters"
             >
               <RotateCcw class="h-3.5 w-3.5" aria-hidden="true" />
@@ -197,13 +200,13 @@ onMounted(runSearch)
           </div>
 
           <fieldset>
-            <legend class="mb-2 text-xs font-semibold tracking-wide text-stone-500 uppercase">Status</legend>
+            <legend class="mb-2 text-xs font-semibold tracking-wide text-stone-500 dark:text-stone-400 uppercase">Status</legend>
             <div class="space-y-2">
-              <label v-for="s in STATUSES" :key="s" class="flex cursor-pointer items-center gap-2.5 text-sm text-stone-700">
+              <label v-for="s in STATUSES" :key="s" class="flex cursor-pointer items-center gap-2.5 text-sm text-stone-700 dark:text-stone-300">
                 <input
                   type="checkbox"
                   :checked="filters.statuses.includes(s)"
-                  class="h-4 w-4 rounded border-stone-300 accent-indigo-600"
+                  class="h-4 w-4 rounded border-stone-300 dark:border-stone-700 accent-indigo-600"
                   @change="toggleStatus(s)"
                 />
                 <StatusBadge :status="s" />
@@ -213,32 +216,32 @@ onMounted(runSearch)
 
           <div class="grid grid-cols-2 gap-2">
             <div>
-              <label class="mb-1 block text-xs font-semibold tracking-wide text-stone-500 uppercase" for="f-date-from">
+              <label class="mb-1 block text-xs font-semibold tracking-wide text-stone-500 dark:text-stone-400 uppercase" for="f-date-from">
                 Date from
               </label>
               <input
                 id="f-date-from"
                 v-model="filters.date_from"
                 type="date"
-                class="w-full rounded-lg border border-stone-300 bg-white px-2.5 py-2 text-sm text-stone-900 transition-soft focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-100"
+                class="w-full rounded-lg border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 px-2.5 py-2 text-sm text-stone-900 dark:text-stone-100 transition-soft focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-100"
               />
             </div>
             <div>
-              <label class="mb-1 block text-xs font-semibold tracking-wide text-stone-500 uppercase" for="f-date-to">
+              <label class="mb-1 block text-xs font-semibold tracking-wide text-stone-500 dark:text-stone-400 uppercase" for="f-date-to">
                 Date to
               </label>
               <input
                 id="f-date-to"
                 v-model="filters.date_to"
                 type="date"
-                class="w-full rounded-lg border border-stone-300 bg-white px-2.5 py-2 text-sm text-stone-900 transition-soft focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-100"
+                class="w-full rounded-lg border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 px-2.5 py-2 text-sm text-stone-900 dark:text-stone-100 transition-soft focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-100"
               />
             </div>
           </div>
 
           <div class="grid grid-cols-2 gap-2">
             <div>
-              <label class="mb-1 block text-xs font-semibold tracking-wide text-stone-500 uppercase" for="f-min-total">
+              <label class="mb-1 block text-xs font-semibold tracking-wide text-stone-500 dark:text-stone-400 uppercase" for="f-min-total">
                 Min total
               </label>
               <input
@@ -248,11 +251,11 @@ onMounted(runSearch)
                 min="0"
                 step="0.01"
                 placeholder="0.00"
-                class="w-full rounded-lg border border-stone-300 bg-white px-2.5 py-2 text-sm text-stone-900 tabular-nums transition-soft focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-100"
+                class="w-full rounded-lg border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 px-2.5 py-2 text-sm text-stone-900 dark:text-stone-100 tabular-nums transition-soft focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-100"
               />
             </div>
             <div>
-              <label class="mb-1 block text-xs font-semibold tracking-wide text-stone-500 uppercase" for="f-max-total">
+              <label class="mb-1 block text-xs font-semibold tracking-wide text-stone-500 dark:text-stone-400 uppercase" for="f-max-total">
                 Max total
               </label>
               <input
@@ -262,20 +265,20 @@ onMounted(runSearch)
                 min="0"
                 step="0.01"
                 placeholder="∞"
-                class="w-full rounded-lg border border-stone-300 bg-white px-2.5 py-2 text-sm text-stone-900 tabular-nums transition-soft focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-100"
+                class="w-full rounded-lg border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 px-2.5 py-2 text-sm text-stone-900 dark:text-stone-100 tabular-nums transition-soft focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-100"
               />
             </div>
           </div>
 
           <div>
-            <label class="mb-1 flex items-center gap-1.5 text-xs font-semibold tracking-wide text-stone-500 uppercase" for="f-sort">
+            <label class="mb-1 flex items-center gap-1.5 text-xs font-semibold tracking-wide text-stone-500 dark:text-stone-400 uppercase" for="f-sort">
               <ArrowDownWideNarrow class="h-3.5 w-3.5" aria-hidden="true" />
               Sort
             </label>
             <select
               id="f-sort"
               v-model="filters.sort"
-              class="w-full rounded-lg border border-stone-300 bg-white px-2.5 py-2 text-sm text-stone-900 transition-soft focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-100"
+              class="w-full rounded-lg border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 px-2.5 py-2 text-sm text-stone-900 dark:text-stone-100 transition-soft focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-100"
             >
               <option v-for="o in SORT_OPTIONS" :key="o.value" :value="o.value">{{ o.label }}</option>
             </select>
@@ -286,19 +289,19 @@ onMounted(runSearch)
       <!-- Results -->
       <section class="min-w-0 flex-1">
         <div class="relative mb-4">
-          <Search class="pointer-events-none absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2 text-stone-400" aria-hidden="true" />
+          <Search class="pointer-events-none absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2 text-stone-400 dark:text-stone-500" aria-hidden="true" />
           <input
             v-model="filters.q"
             type="search"
             placeholder='Search orders — try "wireless" to match products and customers…'
             aria-label="Search orders"
-            class="w-full rounded-xl border border-stone-200 bg-white py-3 pr-4 pl-10 text-sm text-stone-900 shadow-sm placeholder-stone-400 transition-soft focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-100"
+            class="w-full rounded-xl border border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900 py-3 pr-4 pl-10 text-sm text-stone-900 dark:text-stone-100 shadow-sm placeholder-stone-400 dark:placeholder-stone-500 transition-soft focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-100"
             @input="onQInput"
             @keydown.enter.prevent="() => { filters.page = 1; runSearch() }"
           />
         </div>
 
-        <div class="overflow-hidden rounded-xl border border-stone-200 bg-white shadow-sm">
+        <div class="overflow-hidden rounded-xl border border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900 shadow-sm">
           <!-- Loading -->
           <div v-if="loading" class="space-y-3 p-5" aria-label="Loading results">
             <Skeleton cls="h-10 w-full" />
@@ -310,8 +313,8 @@ onMounted(runSearch)
 
           <!-- Error -->
           <div v-else-if="error" class="p-8 text-center" role="alert">
-            <p class="font-semibold text-red-700">Search failed</p>
-            <p class="mt-1 text-sm text-red-600">{{ error }}</p>
+            <p class="font-semibold text-red-700 dark:text-red-200">Search failed</p>
+            <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ error }}</p>
             <button
               class="mt-4 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white transition-soft hover:bg-indigo-700"
               @click="runSearch"
@@ -322,9 +325,9 @@ onMounted(runSearch)
 
           <!-- Empty -->
           <div v-else-if="orders.length === 0" class="p-10 text-center">
-            <SearchX class="mx-auto h-12 w-12 text-stone-300" aria-hidden="true" />
+            <SearchX class="mx-auto h-12 w-12 text-stone-300 dark:text-stone-600" aria-hidden="true" />
             <p class="mt-3 font-semibold text-stone-800">No orders match your search</p>
-            <p class="mt-1 text-sm text-stone-500">Try a different term, or widen the filters.</p>
+            <p class="mt-1 text-sm text-stone-500 dark:text-stone-400">Try a different term, or widen the filters.</p>
             <button
               v-if="hasActiveFilters"
               class="mt-4 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white transition-soft hover:bg-indigo-700"
@@ -338,7 +341,7 @@ onMounted(runSearch)
           <div v-else class="overflow-x-auto">
             <table class="w-full min-w-180 text-sm">
               <thead>
-                <tr class="border-b border-stone-200 bg-stone-50 text-left text-xs font-semibold tracking-wide text-stone-500 uppercase">
+                <tr class="border-b border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-stone-800 text-left text-xs font-semibold tracking-wide text-stone-500 dark:text-stone-400 uppercase">
                   <th class="px-5 py-3">Order</th>
                   <th class="px-5 py-3">Date</th>
                   <th class="px-5 py-3">Customer</th>
@@ -346,22 +349,22 @@ onMounted(runSearch)
                   <th class="px-5 py-3">Status</th>
                 </tr>
               </thead>
-              <tbody class="divide-y divide-stone-100">
-                <tr v-for="o in orders" :key="o.order_id" class="transition-soft hover:bg-stone-50">
+              <tbody class="divide-y divide-stone-100 dark:divide-stone-800">
+                <tr v-for="o in orders" :key="o.order_id" class="transition-soft hover:bg-stone-50 dark:hover:bg-stone-800">
                   <td class="px-5 py-3.5">
                     <router-link
                       :to="`/admin/orders/${o.order_id}`"
-                      class="font-semibold text-indigo-600 tabular-nums hover:text-indigo-700 hover:underline"
+                      class="font-semibold text-indigo-600 dark:text-indigo-400 tabular-nums hover:text-indigo-700 dark:hover:text-indigo-400 hover:underline"
                     >
                       #{{ o.order_id }}
                     </router-link>
                   </td>
-                  <td class="px-5 py-3.5 whitespace-nowrap text-stone-600">{{ formatDateTime(o.order_date) }}</td>
+                  <td class="px-5 py-3.5 whitespace-nowrap text-stone-600 dark:text-stone-300">{{ formatDateTime(o.order_date) }}</td>
                   <td class="px-5 py-3.5">
-                    <p class="font-medium text-stone-900">{{ o.customer?.name }}</p>
-                    <p class="text-xs text-stone-500">{{ o.customer?.email }}</p>
+                    <p class="font-medium text-stone-900 dark:text-stone-100">{{ o.customer?.name }}</p>
+                    <p class="text-xs text-stone-500 dark:text-stone-400">{{ o.customer?.email }}</p>
                   </td>
-                  <td class="px-5 py-3.5 text-right font-semibold text-stone-900 tabular-nums">
+                  <td class="px-5 py-3.5 text-right font-semibold text-stone-900 dark:text-stone-100 tabular-nums">
                     {{ formatMoney(o.total_amount) }}
                   </td>
                   <td class="px-5 py-3.5"><StatusBadge :status="o.status" /></td>
@@ -370,7 +373,7 @@ onMounted(runSearch)
             </table>
           </div>
 
-          <div v-if="!loading && !error && orders.length > 0" class="border-t border-stone-200 px-5 py-4">
+          <div v-if="!loading && !error && orders.length > 0" class="border-t border-stone-200 dark:border-stone-800 px-5 py-4">
             <Pagination
               :page="filters.page"
               :total-pages="totalPages"
@@ -381,7 +384,7 @@ onMounted(runSearch)
           </div>
         </div>
 
-        <p class="mt-3 text-xs text-stone-400">
+        <p class="mt-3 text-xs text-stone-400 dark:text-stone-500">
           Hits, filters, and all KPI aggregations above come from the Elasticsearch
           <code class="rounded bg-stone-100 px-1">orders</code> index — PostgreSQL and MongoDB are never
           queried on this screen.

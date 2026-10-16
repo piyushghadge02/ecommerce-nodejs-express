@@ -7,6 +7,7 @@ import Skeleton from '../components/Skeleton.vue'
 import { apiError, productsApi } from '../api/client.js'
 import { cartCount } from '../stores/cart.js'
 import { loadUsers, selectUser, userStore, selectedUser } from '../stores/user.js'
+import ThemeToggle from '../components/ThemeToggle.vue'
 import { toast } from '../stores/toast.js'
 
 const CATEGORIES = ['peripherals', 'audio', 'cables', 'office']
@@ -66,7 +67,7 @@ function onUserChange(e) {
 </script>
 
 <template>
-  <div class="min-h-screen bg-stone-50">
+  <div class="min-h-screen bg-stone-50 dark:bg-stone-950">
     <!-- Demo banner -->
     <div class="bg-indigo-700 text-white">
       <div class="mx-auto flex max-w-7xl items-center gap-2 px-4 py-2 text-xs font-medium sm:px-6">
@@ -79,28 +80,29 @@ function onUserChange(e) {
     </div>
 
     <!-- Header -->
-    <header class="sticky top-0 z-30 border-b border-stone-200 bg-white/95 backdrop-blur">
+    <header class="sticky top-0 z-30 border-b border-stone-200 bg-white/95 backdrop-blur dark:border-stone-800 dark:bg-stone-900/95">
       <div class="mx-auto flex max-w-7xl flex-wrap items-center gap-3 px-4 py-3 sm:px-6">
         <router-link to="/" class="flex items-center gap-2.5">
           <div class="rounded-lg bg-indigo-600 p-2">
             <Package class="h-5 w-5 text-white" aria-hidden="true" />
           </div>
           <div class="leading-tight">
-            <p class="text-sm font-bold text-stone-900">Polyglot Commerce</p>
-            <p class="hidden text-xs text-stone-500 sm:block">Storefront</p>
+            <p class="text-sm font-bold text-stone-900 dark:text-stone-100">E-Commerce Hub</p>
+            <p class="hidden text-xs text-stone-500 sm:block dark:text-stone-400">Storefront</p>
           </div>
         </router-link>
 
         <div class="ml-auto flex flex-wrap items-center gap-2 sm:gap-3">
+          <ThemeToggle />
           <label class="flex items-center gap-2 text-sm">
-            <span class="hidden items-center gap-1 font-medium text-stone-600 sm:flex">
+            <span class="hidden items-center gap-1 font-medium text-stone-600 sm:flex dark:text-stone-300">
               <User class="h-4 w-4" aria-hidden="true" />
               Log In As
             </span>
             <select
               :value="userStore.selectedId ?? ''"
               :disabled="userStore.loading || !!userStore.error"
-              class="max-w-44 rounded-lg border border-stone-300 bg-white px-2.5 py-2 text-sm font-medium text-stone-800 transition-soft focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-100 sm:max-w-56"
+              class="max-w-44 rounded-lg border border-stone-300 bg-white px-2.5 py-2 text-sm font-medium text-stone-800 transition-soft focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-100 sm:max-w-56 dark:border-stone-700 dark:bg-stone-900 dark:text-stone-100"
               aria-label="Log in as demo user"
               @change="onUserChange"
             >
@@ -112,7 +114,7 @@ function onUserChange(e) {
 
           <router-link
             to="/admin"
-            class="hidden items-center gap-1.5 rounded-lg border border-stone-200 px-3 py-2 text-sm font-medium text-stone-600 transition-soft hover:bg-stone-50 hover:text-stone-900 sm:inline-flex"
+            class="hidden items-center gap-1.5 rounded-lg border border-stone-200 px-3 py-2 text-sm font-medium text-stone-600 transition-soft hover:bg-stone-50 hover:text-stone-900 sm:inline-flex dark:border-stone-700 dark:text-stone-300 dark:hover:bg-stone-800 dark:hover:text-stone-100"
           >
             <Settings2 class="h-4 w-4" aria-hidden="true" />
             Admin
@@ -146,7 +148,7 @@ function onUserChange(e) {
             type="search"
             placeholder="Search products, tags, descriptions…"
             aria-label="Search products"
-            class="w-full rounded-xl border border-stone-200 bg-white py-2.5 pr-4 pl-10 text-sm text-stone-900 shadow-sm placeholder-stone-400 transition-soft focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-100"
+            class="w-full rounded-xl border border-stone-200 bg-white py-2.5 pr-4 pl-10 text-sm text-stone-900 shadow-sm placeholder-stone-400 transition-soft focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-100 dark:border-stone-700 dark:bg-stone-900 dark:text-stone-100 dark:placeholder-stone-500"
             @input="onSearchInput"
           />
         </div>
@@ -155,7 +157,7 @@ function onUserChange(e) {
           <button
             :class="[
               'rounded-full px-3.5 py-1.5 text-sm font-medium transition-soft',
-              category === '' ? 'bg-stone-900 text-white' : 'border border-stone-200 bg-white text-stone-600 hover:border-stone-300 hover:text-stone-900',
+              category === '' ? 'bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900' : 'border border-stone-200 bg-white text-stone-600 hover:border-stone-300 hover:text-stone-900 dark:border-stone-700 dark:bg-stone-900 dark:text-stone-300 dark:hover:border-stone-600 dark:hover:text-stone-100',
             ]"
             @click="pickCategory('')"
           >
@@ -166,7 +168,7 @@ function onUserChange(e) {
             :key="c"
             :class="[
               'rounded-full px-3.5 py-1.5 text-sm font-medium capitalize transition-soft',
-              category === c ? 'bg-stone-900 text-white' : 'border border-stone-200 bg-white text-stone-600 hover:border-stone-300 hover:text-stone-900',
+              category === c ? 'bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900' : 'border border-stone-200 bg-white text-stone-600 hover:border-stone-300 hover:text-stone-900 dark:border-stone-700 dark:bg-stone-900 dark:text-stone-300 dark:hover:border-stone-600 dark:hover:text-stone-100',
             ]"
             @click="pickCategory(c)"
           >
@@ -175,11 +177,11 @@ function onUserChange(e) {
         </div>
       </div>
 
-      <p class="mb-4 text-sm text-stone-500" aria-live="polite">{{ resultLabel }}</p>
+      <p class="mb-4 text-sm text-stone-500 dark:text-stone-400" aria-live="polite">{{ resultLabel }}</p>
 
       <!-- Loading skeletons -->
       <div v-if="loading" class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        <div v-for="i in 8" :key="i" class="rounded-xl border border-stone-200 bg-white p-3 shadow-sm">
+        <div v-for="i in 8" :key="i" class="rounded-xl border border-stone-200 bg-white p-3 shadow-sm dark:border-stone-800 dark:bg-stone-900">
           <Skeleton cls="h-40 w-full" />
           <div class="space-y-2 p-1 pt-3">
             <Skeleton cls="h-4 w-2/3" />
@@ -193,11 +195,11 @@ function onUserChange(e) {
       <!-- Error state -->
       <div
         v-else-if="error"
-        class="mx-auto max-w-md rounded-xl border border-red-200 bg-red-50 p-8 text-center"
+        class="mx-auto max-w-md rounded-xl border border-red-200 bg-red-50 p-8 text-center dark:border-red-900 dark:bg-red-950/60"
         role="alert"
       >
-        <p class="font-semibold text-red-800">Couldn't load the catalog</p>
-        <p class="mt-1 text-sm text-red-700">{{ error }}</p>
+        <p class="font-semibold text-red-800 dark:text-red-200">Couldn't load the catalog</p>
+        <p class="mt-1 text-sm text-red-700 dark:text-red-300">{{ error }}</p>
         <button
           class="mt-4 rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-white transition-soft hover:bg-red-700"
           @click="fetchProducts"
@@ -209,11 +211,11 @@ function onUserChange(e) {
       <!-- Empty state -->
       <div
         v-else-if="products.length === 0"
-        class="mx-auto max-w-md rounded-xl border border-stone-200 bg-white p-10 text-center shadow-sm"
+        class="mx-auto max-w-md rounded-xl border border-stone-200 bg-white p-10 text-center shadow-sm dark:border-stone-800 dark:bg-stone-900"
       >
-        <SearchX class="mx-auto h-12 w-12 text-stone-300" aria-hidden="true" />
-        <p class="mt-3 font-semibold text-stone-800">No products found</p>
-        <p class="mt-1 text-sm text-stone-500">
+        <SearchX class="mx-auto h-12 w-12 text-stone-300 dark:text-stone-600" aria-hidden="true" />
+        <p class="mt-3 font-semibold text-stone-800 dark:text-stone-100">No products found</p>
+        <p class="mt-1 text-sm text-stone-500 dark:text-stone-400">
           Try a different search term or category. Inactive products are hidden from the storefront.
         </p>
         <button
