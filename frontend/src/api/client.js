@@ -2,10 +2,14 @@ import axios from 'axios'
 
 /**
  * API client for the FastAPI backend.
- * Base URL comes from VITE_API_URL (see repo-root .env.example),
- * defaulting to the local dev backend at http://localhost:8000.
+ * Base URL comes from VITE_API_URL (see repo-root .env.example).
+ * When unset, same-origin relative URLs are used so Vite's dev/proxy
+ * (`/api` -> http://127.0.0.1:8000) handles routing without CORS issues.
+ * Set VITE_API_URL=http://localhost:8000 for an absolute dev backend, or to
+ * the deployed API URL in production builds.
  */
-const baseURL = (import.meta.env.VITE_API_URL || 'http://localhost:8000').replace(/\/$/, '')
+const rawBase = (import.meta.env.VITE_API_URL ?? '').trim()
+const baseURL = rawBase === '' ? '' : rawBase.replace(/\/$/, '')
 
 export const api = axios.create({
   baseURL,

@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { LayoutDashboard, Menu, Package, Store, X } from 'lucide-vue-next'
+import ThemeToggle from './ThemeToggle.vue'
 
 const route = useRoute()
 const mobileOpen = ref(false)
@@ -18,16 +19,16 @@ function isActive(item) {
 const linkCls = (active) =>
   [
     'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-soft',
-    active ? 'bg-indigo-50 text-indigo-700' : 'text-stone-600 hover:bg-stone-100 hover:text-stone-900',
+    active ? 'bg-indigo-50 text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300' : 'text-stone-600 hover:bg-stone-100 hover:text-stone-900 dark:text-stone-300 dark:hover:bg-stone-800 dark:hover:text-stone-100',
   ].join(' ')
 </script>
 
 <template>
-  <div class="min-h-screen bg-stone-50">
+  <div class="min-h-screen bg-stone-50 dark:bg-stone-950">
     <!-- Mobile top bar -->
-    <header class="sticky top-0 z-30 flex items-center gap-3 border-b border-stone-200 bg-white px-4 py-3 lg:hidden">
+    <header class="sticky top-0 z-30 flex items-center gap-3 border-b border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900 px-4 py-3 lg:hidden">
       <button
-        class="rounded-lg p-2 text-stone-600 transition-soft hover:bg-stone-100"
+        class="rounded-lg p-2 text-stone-600 dark:text-stone-300 transition-soft hover:bg-stone-100 dark:hover:bg-stone-800"
         aria-label="Open admin menu"
         @click="mobileOpen = true"
       >
@@ -37,19 +38,20 @@ const linkCls = (active) =>
         <div class="rounded-lg bg-indigo-600 p-1.5">
           <Package class="h-4 w-4 text-white" aria-hidden="true" />
         </div>
-        <span class="text-sm font-bold text-stone-900">Admin Console</span>
+        <span class="text-sm font-bold text-stone-900 dark:text-stone-100">Admin Console</span>
       </div>
+      <ThemeToggle class="ml-auto" />
     </header>
 
     <!-- Desktop sidebar -->
-    <aside class="fixed inset-y-0 left-0 z-30 hidden w-64 flex-col border-r border-stone-200 bg-white lg:flex">
-      <div class="flex items-center gap-2.5 border-b border-stone-200 px-5 py-4">
+    <aside class="fixed inset-y-0 left-0 z-30 hidden w-64 flex-col border-r border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900 lg:flex">
+      <div class="flex items-center gap-2.5 border-b border-stone-200 dark:border-stone-800 px-5 py-4">
         <div class="rounded-lg bg-indigo-600 p-2">
           <Package class="h-5 w-5 text-white" aria-hidden="true" />
         </div>
         <div>
-          <p class="text-sm font-bold text-stone-900">Polyglot Commerce</p>
-          <p class="text-xs text-stone-500">Admin Console</p>
+          <p class="text-sm font-bold text-stone-900 dark:text-stone-100">E-Commerce Hub</p>
+          <p class="text-xs text-stone-500 dark:text-stone-400">Admin Console</p>
         </div>
       </div>
 
@@ -60,15 +62,19 @@ const linkCls = (active) =>
         </router-link>
       </nav>
 
-      <div class="border-t border-stone-200 p-4">
+      <div class="border-t border-stone-200 dark:border-stone-800 p-4">
+        <div class="flex items-center justify-between px-3 py-2.5">
+          <span class="text-sm font-medium text-stone-600 dark:text-stone-300">Dark mode</span>
+          <ThemeToggle />
+        </div>
         <router-link
           to="/"
-          class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-stone-600 transition-soft hover:bg-stone-100 hover:text-stone-900"
+          class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-stone-600 dark:text-stone-300 transition-soft hover:bg-stone-100 dark:hover:bg-stone-800 hover:text-stone-900 dark:hover:text-stone-100"
         >
           <Store class="h-5 w-5" aria-hidden="true" />
           Storefront
         </router-link>
-        <p class="mt-3 px-3 text-[11px] leading-relaxed text-stone-400">
+        <p class="mt-3 px-3 text-[11px] leading-relaxed text-stone-400 dark:text-stone-500">
           Demo POC — orders write to PostgreSQL, catalog to MongoDB, search reads Elasticsearch.
         </p>
       </div>
@@ -77,11 +83,11 @@ const linkCls = (active) =>
     <!-- Mobile drawer -->
     <div v-if="mobileOpen" class="fixed inset-0 z-40 lg:hidden">
       <div class="absolute inset-0 bg-stone-900/40" @click="mobileOpen = false"></div>
-      <aside class="absolute inset-y-0 left-0 flex w-72 flex-col bg-white shadow-2xl">
-        <div class="flex items-center justify-between border-b border-stone-200 px-5 py-4">
-          <p class="text-sm font-bold text-stone-900">Admin Console</p>
+      <aside class="absolute inset-y-0 left-0 flex w-72 flex-col bg-white dark:bg-stone-900 shadow-2xl">
+        <div class="flex items-center justify-between border-b border-stone-200 dark:border-stone-800 px-5 py-4">
+          <p class="text-sm font-bold text-stone-900 dark:text-stone-100">Admin Console</p>
           <button
-            class="rounded-lg p-1.5 text-stone-500 hover:bg-stone-100"
+            class="rounded-lg p-1.5 text-stone-500 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800"
             aria-label="Close admin menu"
             @click="mobileOpen = false"
           >
@@ -100,10 +106,10 @@ const linkCls = (active) =>
             {{ item.label }}
           </router-link>
         </nav>
-        <div class="border-t border-stone-200 p-4">
+        <div class="border-t border-stone-200 dark:border-stone-800 p-4">
           <router-link
             to="/"
-            class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-stone-600 hover:bg-stone-100"
+            class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-stone-600 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800"
             @click="mobileOpen = false"
           >
             <Store class="h-5 w-5" aria-hidden="true" />

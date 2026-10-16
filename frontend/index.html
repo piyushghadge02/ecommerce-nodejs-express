@@ -3,11 +3,19 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Polyglot Commerce — Order Management &amp; Search</title>
+    <title>E-Commerce Hub — E-Commerce Order Management &amp; Search System</title>
     <meta
       name="description"
-      content="E-commerce order management and search proof-of-concept: Vue.js storefront, admin dashboard, PostgreSQL + MongoDB + Elasticsearch polyglot persistence."
+      content="E-Commerce Hub — E-Commerce Order Management & Search System: Vue.js storefront, admin dashboard, PostgreSQL + MongoDB + Elasticsearch."
     />
+    <script>
+      // Apply the saved storefront theme before first paint (no light-mode flash).
+      try {
+        if (localStorage.getItem('ecom-theme') === 'dark') {
+          document.documentElement.classList.add('dark')
+        }
+      } catch (e) {}
+    </script>
   </head>
   <body>
     <div id="app"></div>

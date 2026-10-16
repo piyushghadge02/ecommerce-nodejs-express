@@ -1,10 +1,17 @@
 @import "tailwindcss";
 
+/* Class-based dark mode (toggled via `.dark` on <html> by stores/theme.js). */
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* Design tokens (PLAN.md §10): warm white surfaces, stone borders/text,
    indigo accent, system font stack. */
 
 :root {
   color-scheme: light;
+}
+
+.dark {
+  color-scheme: dark;
 }
 
 html {
@@ -13,7 +20,7 @@ html {
 }
 
 body {
-  @apply bg-stone-50 text-stone-900;
+  @apply bg-stone-50 text-stone-900 dark:bg-stone-950 dark:text-stone-100;
   font-family:
     ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
     Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
@@ -34,6 +41,9 @@ body {
 .nice-scroll::-webkit-scrollbar-thumb {
   background: #d6d3d1;
   border-radius: 8px;
+}
+.dark .nice-scroll::-webkit-scrollbar-thumb {
+  background: #44403c;
 }
 .nice-scroll::-webkit-scrollbar-track {
   background: transparent;
