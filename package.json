@@ -1,0 +1,27 @@
+{
+  "dependencies": {
+    "@elastic/elasticsearch": "^8.17.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.2",
+    "mongodb": "^6.12.0",
+    "pg": "^8.13.1"
+  },
+  "description": "E-commerce Order Management & Search Service \u2014 Node.js/Express backend (PostgreSQL + MongoDB + Elasticsearch)",
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "MIT",
+  "main": "src/index.js",
+  "name": "ecommerce-polyglot-express",
+  "scripts": {
+    "dev": "node --watch src/index.js",
+    "reindex": "node scripts/reindex.js",
+    "seed": "node scripts/seed.js",
+    "seed:reset": "node scripts/seed.js --reset",
+    "start": "node src/index.js",
+    "test": "node --test test/money.test.js test/seed-plan.test.js test/search-body.test.js test/products.test.js test/orders.test.js test/search.test.js test/sync.test.js"
+  },
+  "type": "commonjs",
+  "version": "1.0.0"
+}
