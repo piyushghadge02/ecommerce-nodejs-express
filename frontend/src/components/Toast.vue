@@ -3,10 +3,10 @@ import { AlertTriangle, CheckCircle2, Info, X, XCircle } from 'lucide-vue-next'
 import { dismissToast, toasts } from '../stores/toast.js'
 
 const styles = {
-  success: { icon: CheckCircle2, ring: 'ring-emerald-200', iconCls: 'text-emerald-600' },
-  error: { icon: XCircle, ring: 'ring-red-200', iconCls: 'text-red-600' },
-  warning: { icon: AlertTriangle, ring: 'ring-amber-200', iconCls: 'text-amber-600' },
-  info: { icon: Info, ring: 'ring-indigo-200', iconCls: 'text-indigo-600' },
+  success: { icon: CheckCircle2, ring: 'ring-emerald-200 dark:ring-emerald-900', iconCls: 'text-emerald-600 dark:text-emerald-400' },
+  error: { icon: XCircle, ring: 'ring-red-200 dark:ring-red-900', iconCls: 'text-red-600 dark:text-red-400' },
+  warning: { icon: AlertTriangle, ring: 'ring-amber-200 dark:ring-amber-900', iconCls: 'text-amber-600 dark:text-amber-400' },
+  info: { icon: Info, ring: 'ring-indigo-200 dark:ring-indigo-900', iconCls: 'text-indigo-600 dark:text-indigo-400' },
 }
 </script>
 
@@ -18,7 +18,7 @@ const styles = {
     <div
       v-for="t in toasts"
       :key="t.id"
-      class="pointer-events-auto flex items-start gap-3 rounded-xl border border-stone-200 bg-white p-3.5 shadow-lg ring-1"
+      class="pointer-events-auto flex items-start gap-3 rounded-xl border border-stone-200 bg-white p-3.5 shadow-lg ring-1 dark:border-stone-700 dark:bg-stone-900"
       :class="styles[t.type]?.ring ?? styles.info.ring"
       role="status"
     >
@@ -28,9 +28,9 @@ const styles = {
         :class="styles[t.type]?.iconCls ?? styles.info.iconCls"
         aria-hidden="true"
       />
-      <p class="min-w-0 flex-1 text-sm text-stone-800">{{ t.message }}</p>
+      <p class="min-w-0 flex-1 text-sm text-stone-800 dark:text-stone-100">{{ t.message }}</p>
       <button
-        class="rounded p-0.5 text-stone-400 transition-soft hover:bg-stone-100 hover:text-stone-600"
+        class="rounded p-0.5 text-stone-400 transition-soft hover:bg-stone-100 hover:text-stone-600 dark:text-stone-500 dark:hover:bg-stone-800 dark:hover:text-stone-300"
         aria-label="Dismiss notification"
         @click="dismissToast(t.id)"
       >

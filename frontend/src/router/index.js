@@ -30,7 +30,7 @@ const router = createRouter({
 })
 
 router.afterEach((to) => {
-  document.title = `${to.meta.title ?? 'App'} — Polyglot Commerce`
+  document.title = `${to.meta.title ?? 'App'} — E-Commerce Hub`
 })
 
 export default router

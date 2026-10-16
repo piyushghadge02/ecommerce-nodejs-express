@@ -1,9 +1,9 @@
-const moneyFmt = new Intl.NumberFormat('en-US', {
+const moneyFmt = new Intl.NumberFormat('en-IN', {
   style: 'currency',
-  currency: 'USD',
+  currency: 'INR',
 })
 
-/** Format a numeric amount as $X.XX (tolerant of string/Decimal input). */
+/** Format a numeric amount as ₹X,XX,XXX.XX (tolerant of string/Decimal input). */
 export function formatMoney(value) {
   const n = Number(value)
   if (!Number.isFinite(n)) return '—'
