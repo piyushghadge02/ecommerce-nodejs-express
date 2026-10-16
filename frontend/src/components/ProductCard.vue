@@ -30,43 +30,50 @@ const categoryLabel = (c) => (c ? c.charAt(0).toUpperCase() + c.slice(1) : '—'
 
 <template>
   <article
-    class="flex flex-col overflow-hidden rounded-xl border border-stone-200 bg-white shadow-sm transition-soft hover:-translate-y-0.5 hover:shadow-md"
+    class="flex flex-col overflow-hidden rounded-xl border border-stone-200 bg-white shadow-sm transition-soft hover:-translate-y-0.5 hover:shadow-md dark:border-stone-800 dark:bg-stone-900"
   >
-    <ProductThumb :category="product.category" :title="product.title" size="lg" class="m-3 mb-0" />
+    <ProductThumb
+      :category="product.category"
+      :title="product.title"
+      :sku="product.sku"
+      :image="product.image"
+      size="lg"
+      class="m-3 mb-0"
+    />
 
     <div class="flex flex-1 flex-col gap-2 p-4">
       <div class="flex items-center justify-between gap-2">
         <span
-          class="inline-flex items-center rounded-full bg-stone-100 px-2 py-0.5 text-[11px] font-medium text-stone-600"
+          class="inline-flex items-center rounded-full bg-stone-100 px-2 py-0.5 text-[11px] font-medium text-stone-600 dark:bg-stone-800 dark:text-stone-300"
         >
           {{ categoryLabel(product.category) }}
         </span>
-        <span v-if="product.sku" class="text-[11px] text-stone-400 tabular-nums">{{ product.sku }}</span>
+        <span v-if="product.sku" class="text-[11px] text-stone-400 tabular-nums dark:text-stone-500">{{ product.sku }}</span>
       </div>
 
-      <h3 class="text-sm font-semibold text-stone-900 line-clamp-1" :title="product.title">
+      <h3 class="text-sm font-semibold text-stone-900 line-clamp-1 dark:text-stone-100" :title="product.title">
         {{ product.title }}
       </h3>
-      <p class="text-xs text-stone-500 line-clamp-2">{{ product.description }}</p>
+      <p class="text-xs text-stone-500 line-clamp-2 dark:text-stone-400">{{ product.description }}</p>
 
       <div v-if="product.tags?.length" class="flex flex-wrap gap-1">
         <span
           v-for="tag in product.tags.slice(0, 4)"
           :key="tag"
-          class="rounded bg-indigo-50 px-1.5 py-0.5 text-[11px] font-medium text-indigo-700"
+          class="rounded bg-indigo-50 px-1.5 py-0.5 text-[11px] font-medium text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300"
         >
           {{ tag }}
         </span>
       </div>
 
       <div class="mt-auto flex items-end justify-between gap-2 pt-2">
-        <p class="text-lg font-bold text-stone-900 tabular-nums">{{ formatMoney(product.price) }}</p>
+        <p class="text-lg font-bold text-stone-900 tabular-nums dark:text-stone-100">{{ formatMoney(product.price) }}</p>
       </div>
 
       <div class="flex items-center gap-2">
-        <div class="flex items-center rounded-lg border border-stone-200">
+        <div class="flex items-center rounded-lg border border-stone-200 dark:border-stone-700">
           <button
-            class="px-2 py-1.5 text-stone-500 transition-soft hover:text-stone-900 disabled:opacity-40"
+            class="px-2 py-1.5 text-stone-500 transition-soft hover:text-stone-900 disabled:opacity-40 dark:text-stone-400 dark:hover:text-stone-100"
             :disabled="qty <= 1"
             aria-label="Decrease quantity"
             @click="step(-1)"
@@ -75,7 +82,7 @@ const categoryLabel = (c) => (c ? c.charAt(0).toUpperCase() + c.slice(1) : '—'
           </button>
           <span class="w-8 text-center text-sm font-semibold tabular-nums" aria-live="polite">{{ qty }}</span>
           <button
-            class="px-2 py-1.5 text-stone-500 transition-soft hover:text-stone-900"
+            class="px-2 py-1.5 text-stone-500 transition-soft hover:text-stone-900 dark:text-stone-400 dark:hover:text-stone-100"
             aria-label="Increase quantity"
             @click="step(1)"
           >

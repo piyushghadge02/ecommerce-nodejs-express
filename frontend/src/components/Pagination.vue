@@ -35,19 +35,19 @@ const rangeText = computed(() => {
 })
 
 const btn =
-  'inline-flex h-8 min-w-8 items-center justify-center rounded-lg border border-stone-200 bg-white px-2 text-sm font-medium text-stone-700 transition-soft hover:border-stone-300 hover:bg-stone-50 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-white'
+  'inline-flex h-8 min-w-8 items-center justify-center rounded-lg border border-stone-200 bg-white px-2 text-sm font-medium text-stone-700 transition-soft hover:border-stone-300 hover:bg-stone-50 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-white dark:border-stone-700 dark:bg-stone-900 dark:text-stone-200 dark:hover:border-stone-600 dark:hover:bg-stone-800 dark:disabled:hover:bg-stone-900'
 </script>
 
 <template>
   <div class="flex flex-col items-center justify-between gap-3 sm:flex-row">
-    <p class="text-sm text-stone-500">{{ rangeText }}</p>
+    <p class="text-sm text-stone-500 dark:text-stone-400">{{ rangeText }}</p>
     <nav class="flex items-center gap-1.5" aria-label="Pagination">
       <button :class="btn" :disabled="page <= 1" aria-label="Previous page" @click="go(page - 1)">
         <ChevronLeft class="h-4 w-4" />
       </button>
 
       <button v-if="pages.start > 1" :class="btn" @click="go(1)">1</button>
-      <span v-if="pages.start > 2" class="px-1 text-sm text-stone-400">…</span>
+      <span v-if="pages.start > 2" class="px-1 text-sm text-stone-400 dark:text-stone-500">…</span>
 
       <button
         v-for="p in pages.out"
@@ -59,7 +59,7 @@ const btn =
         {{ p }}
       </button>
 
-      <span v-if="pages.end < pages.total - 1" class="px-1 text-sm text-stone-400">…</span>
+      <span v-if="pages.end < pages.total - 1" class="px-1 text-sm text-stone-400 dark:text-stone-500">…</span>
       <button v-if="pages.end < pages.total" :class="btn" @click="go(pages.total)">
         {{ pages.total }}
       </button>

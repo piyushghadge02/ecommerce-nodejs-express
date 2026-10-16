@@ -9,5 +9,5 @@ defineProps({
 </script>
 
 <template>
-  <div class="animate-pulse rounded-lg bg-stone-200/70" :class="cls" aria-hidden="true" />
+  <div class="animate-pulse rounded-lg bg-stone-200/70 dark:bg-stone-700/60" :class="cls" aria-hidden="true" />
 </template>

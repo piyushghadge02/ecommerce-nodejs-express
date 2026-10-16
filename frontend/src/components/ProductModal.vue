@@ -152,8 +152,8 @@ function close() {
 }
 
 const inputCls = (bad) =>
-  `w-full rounded-lg border bg-white px-3 py-2 text-sm text-stone-900 placeholder-stone-400 transition-soft focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-100 ${
-    bad ? 'border-red-400' : 'border-stone-300'
+  `w-full rounded-lg border bg-white px-3 py-2 text-sm text-stone-900 placeholder-stone-400 transition-soft focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-100 dark:bg-stone-900 dark:text-stone-100 dark:placeholder-stone-500 ${
+    bad ? 'border-red-400 dark:border-red-500' : 'border-stone-300 dark:border-stone-700'
   }`
 </script>
 
@@ -162,14 +162,14 @@ const inputCls = (bad) =>
     <div class="absolute inset-0 bg-stone-900/40" @click="close"></div>
 
     <div class="absolute inset-0 overflow-y-auto p-4 sm:p-6">
-      <div class="mx-auto w-full max-w-2xl rounded-xl bg-white shadow-2xl">
-        <header class="flex items-center justify-between border-b border-stone-200 px-5 py-4">
+      <div class="mx-auto w-full max-w-2xl rounded-xl bg-white dark:bg-stone-900 shadow-2xl">
+        <header class="flex items-center justify-between border-b border-stone-200 dark:border-stone-800 px-5 py-4">
           <div>
             <h2 class="text-base font-semibold text-stone-900">{{ title }}</h2>
-            <p class="text-xs text-stone-500">Writes go to MongoDB only — order history is never rewritten.</p>
+            <p class="text-xs text-stone-500 dark:text-stone-400">Writes go to MongoDB only — order history is never rewritten.</p>
           </div>
           <button
-            class="rounded-lg p-1.5 text-stone-500 transition-soft hover:bg-stone-100 hover:text-stone-800"
+            class="rounded-lg p-1.5 text-stone-500 dark:text-stone-400 transition-soft hover:bg-stone-100 hover:text-stone-800"
             aria-label="Close dialog"
             @click="close"
           >
@@ -181,33 +181,33 @@ const inputCls = (bad) =>
           <!-- Basics -->
           <div class="grid gap-4 sm:grid-cols-2">
             <div class="sm:col-span-2">
-              <label class="mb-1 block text-sm font-medium text-stone-700" for="pm-title">Title *</label>
+              <label class="mb-1 block text-sm font-medium text-stone-700 dark:text-stone-300" for="pm-title">Title *</label>
               <input id="pm-title" v-model="form.title" type="text" :class="inputCls(errors.title)" placeholder="Wireless Mouse" />
-              <p v-if="errors.title" class="mt-1 text-xs text-red-600">{{ errors.title }}</p>
+              <p v-if="errors.title" class="mt-1 text-xs text-red-600 dark:text-red-400">{{ errors.title }}</p>
             </div>
             <div>
-              <label class="mb-1 block text-sm font-medium text-stone-700" for="pm-sku">SKU *</label>
+              <label class="mb-1 block text-sm font-medium text-stone-700 dark:text-stone-300" for="pm-sku">SKU *</label>
               <input id="pm-sku" v-model="form.sku" type="text" :class="inputCls(errors.sku)" placeholder="WM-001" />
-              <p v-if="errors.sku" class="mt-1 text-xs text-red-600">{{ errors.sku }}</p>
+              <p v-if="errors.sku" class="mt-1 text-xs text-red-600 dark:text-red-400">{{ errors.sku }}</p>
             </div>
             <div>
-              <label class="mb-1 block text-sm font-medium text-stone-700" for="pm-price">Price (USD) *</label>
+              <label class="mb-1 block text-sm font-medium text-stone-700 dark:text-stone-300" for="pm-price">Price (INR ₹) *</label>
               <input id="pm-price" v-model="form.price" type="number" min="0.01" step="0.01" :class="inputCls(errors.price)" placeholder="50.16" />
-              <p v-if="errors.price" class="mt-1 text-xs text-red-600">{{ errors.price }}</p>
+              <p v-if="errors.price" class="mt-1 text-xs text-red-600 dark:text-red-400">{{ errors.price }}</p>
             </div>
             <div class="sm:col-span-2">
-              <label class="mb-1 block text-sm font-medium text-stone-700" for="pm-desc">Description</label>
+              <label class="mb-1 block text-sm font-medium text-stone-700 dark:text-stone-300" for="pm-desc">Description</label>
               <textarea id="pm-desc" v-model="form.description" rows="2" :class="inputCls(false)" placeholder="Short product description…" />
             </div>
             <div>
-              <label class="mb-1 block text-sm font-medium text-stone-700" for="pm-cat">Category *</label>
+              <label class="mb-1 block text-sm font-medium text-stone-700 dark:text-stone-300" for="pm-cat">Category *</label>
               <select id="pm-cat" v-model="form.category" :class="inputCls(errors.category)">
                 <option v-for="c in CATEGORIES" :key="c" :value="c">{{ c }}</option>
               </select>
-              <p v-if="errors.category" class="mt-1 text-xs text-red-600">{{ errors.category }}</p>
+              <p v-if="errors.category" class="mt-1 text-xs text-red-600 dark:text-red-400">{{ errors.category }}</p>
             </div>
             <div>
-              <label class="mb-1 block text-sm font-medium text-stone-700" for="pm-tags">Tags (comma-separated)</label>
+              <label class="mb-1 block text-sm font-medium text-stone-700 dark:text-stone-300" for="pm-tags">Tags (comma-separated)</label>
               <input id="pm-tags" v-model="form.tags" type="text" :class="inputCls(false)" placeholder="wireless, usb, office" />
             </div>
             <div class="flex items-center gap-2.5 sm:col-span-2">
@@ -216,7 +216,7 @@ const inputCls = (bad) =>
                 role="switch"
                 :aria-checked="form.active"
                 class="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full transition-soft"
-                :class="form.active ? 'bg-indigo-600' : 'bg-stone-300'"
+                :class="form.active ? 'bg-indigo-600' : ' bg-stone-300 dark:bg-stone-700'"
                 @click="form.active = !form.active"
               >
                 <span
@@ -224,31 +224,31 @@ const inputCls = (bad) =>
                   :class="form.active ? 'translate-x-5' : 'translate-x-0'"
                 />
               </button>
-              <span class="text-sm font-medium text-stone-700">
+              <span class="text-sm font-medium text-stone-700 dark:text-stone-300">
                 {{ form.active ? 'Active — visible in the storefront' : 'Inactive — hidden from the storefront' }}
               </span>
             </div>
           </div>
 
           <!-- Attributes -->
-          <fieldset class="rounded-xl border border-stone-200 p-4">
-            <legend class="px-1 text-sm font-semibold text-stone-800">Attributes</legend>
+          <fieldset class="rounded-xl border border-stone-200 dark:border-stone-800 p-4">
+            <legend class="px-1 text-sm font-semibold text-stone-800 dark:text-stone-200">Attributes</legend>
             <div v-for="(row, i) in attrRows" :key="i" class="mb-2 flex gap-2">
               <input v-model="row.k" type="text" placeholder="key (e.g. color)" :class="inputCls(false)" :aria-label="`Attribute key ${i + 1}`" />
               <input v-model="row.v" type="text" placeholder="value (e.g. black)" :class="inputCls(false)" :aria-label="`Attribute value ${i + 1}`" />
               <button
                 type="button"
-                class="shrink-0 rounded-lg p-2 text-stone-400 transition-soft hover:bg-red-50 hover:text-red-600"
+                class="shrink-0 rounded-lg p-2 text-stone-400 dark:text-stone-500 transition-soft hover:bg-red-50 dark:hover:bg-red-950 hover:text-red-600 dark:hover:text-red-400"
                 :aria-label="`Remove attribute ${i + 1}`"
                 @click="attrRows.splice(i, 1)"
               >
                 <Trash2 class="h-4 w-4" />
               </button>
             </div>
-            <p v-if="errors.attributes" class="mb-2 text-xs text-red-600">{{ errors.attributes }}</p>
+            <p v-if="errors.attributes" class="mb-2 text-xs text-red-600 dark:text-red-400">{{ errors.attributes }}</p>
             <button
               type="button"
-              class="inline-flex items-center gap-1.5 rounded-lg border border-stone-200 px-2.5 py-1.5 text-xs font-medium text-stone-600 transition-soft hover:bg-stone-50"
+              class="inline-flex items-center gap-1.5 rounded-lg border border-stone-200 dark:border-stone-800 px-2.5 py-1.5 text-xs font-medium text-stone-600 transition-soft hover:bg-stone-50 dark:hover:bg-stone-800"
               @click="attrRows.push({ k: '', v: '' })"
             >
               <Plus class="h-3.5 w-3.5" /> Add attribute
@@ -256,9 +256,9 @@ const inputCls = (bad) =>
           </fieldset>
 
           <!-- Variants -->
-          <fieldset class="rounded-xl border border-stone-200 p-4">
-            <legend class="px-1 text-sm font-semibold text-stone-800">Variants *</legend>
-            <div class="mb-2 hidden grid-cols-[1fr_1fr_110px_40px] gap-2 text-xs font-medium text-stone-500 sm:grid">
+          <fieldset class="rounded-xl border border-stone-200 dark:border-stone-800 p-4">
+            <legend class="px-1 text-sm font-semibold text-stone-800 dark:text-stone-200">Variants *</legend>
+            <div class="mb-2 hidden grid-cols-[1fr_1fr_110px_40px] gap-2 text-xs font-medium text-stone-500 dark:text-stone-400 sm:grid">
               <span>Variant SKU *</span><span>Color</span><span>Stock</span><span></span>
             </div>
             <div v-for="(row, i) in variantRows" :key="i" class="mb-2 grid grid-cols-[1fr_1fr_110px_40px] gap-2">
@@ -275,35 +275,35 @@ const inputCls = (bad) =>
               />
               <button
                 type="button"
-                class="rounded-lg p-2 text-stone-400 transition-soft hover:bg-red-50 hover:text-red-600 disabled:opacity-30"
+                class="rounded-lg p-2 text-stone-400 dark:text-stone-500 transition-soft hover:bg-red-50 dark:hover:bg-red-950 hover:text-red-600 dark:hover:text-red-400 disabled:opacity-30"
                 :disabled="variantRows.length <= 1"
                 :aria-label="`Remove variant ${i + 1}`"
                 @click="variantRows.splice(i, 1)"
               >
                 <Trash2 class="h-4 w-4" />
               </button>
-              <p v-if="errors[`variant_stock_${i}`]" class="col-span-4 -mt-1 text-xs text-red-600">
+              <p v-if="errors[`variant_stock_${i}`]" class="col-span-4 -mt-1 text-xs text-red-600 dark:text-red-400">
                 {{ errors[`variant_stock_${i}`] }}
               </p>
             </div>
-            <p v-if="errors.variants" class="mb-2 text-xs text-red-600">{{ errors.variants }}</p>
+            <p v-if="errors.variants" class="mb-2 text-xs text-red-600 dark:text-red-400">{{ errors.variants }}</p>
             <button
               type="button"
-              class="inline-flex items-center gap-1.5 rounded-lg border border-stone-200 px-2.5 py-1.5 text-xs font-medium text-stone-600 transition-soft hover:bg-stone-50"
+              class="inline-flex items-center gap-1.5 rounded-lg border border-stone-200 dark:border-stone-800 px-2.5 py-1.5 text-xs font-medium text-stone-600 transition-soft hover:bg-stone-50 dark:hover:bg-stone-800"
               @click="variantRows.push({ sku: '', color: '', stock: '' })"
             >
               <Plus class="h-3.5 w-3.5" /> Add variant
             </button>
           </fieldset>
 
-          <p v-if="isEdit && product?.updated_at" class="text-xs text-stone-400">
+          <p v-if="isEdit && product?.updated_at" class="text-xs text-stone-400 dark:text-stone-500">
             Last updated: {{ formatDateTime(product.updated_at) }}
           </p>
 
-          <div class="flex justify-end gap-2 border-t border-stone-200 pt-4">
+          <div class="flex justify-end gap-2 border-t border-stone-200 dark:border-stone-800 pt-4">
             <button
               type="button"
-              class="rounded-lg border border-stone-200 px-4 py-2 text-sm font-medium text-stone-700 transition-soft hover:bg-stone-50"
+              class="rounded-lg border border-stone-200 dark:border-stone-800 px-4 py-2 text-sm font-medium text-stone-700 dark:text-stone-300 transition-soft hover:bg-stone-50 dark:hover:bg-stone-800"
               @click="close"
             >
               Cancel
